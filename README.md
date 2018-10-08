@@ -9,7 +9,7 @@ $ ./proxy 3306 3307 ./server.crt ./server.key
 
 ## Protocol
 
-### Without TLS packets
+### No TLS
 
 Proxy forwards initial handshakes and auth results without any modifications.
 
@@ -23,7 +23,7 @@ Server     Proxy      Client
   (copying both ways)
 ```
 
-### With TLS packets
+### With TLS
 
 Without proxy:
 
