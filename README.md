@@ -11,7 +11,7 @@ $ ./proxy 3306 3307 ./server.crt ./server.key
 
 ### Without TLS packets
 
-Proxy just proxies initial handshakes and auth result without any modifications.
+Proxy forwards initial handshakes and auth results without any modifications.
 
 ```
 Server     Proxy      Client
@@ -25,6 +25,8 @@ Server     Proxy      Client
 
 ### With TLS packets
 
+Without proxy:
+
 ```
 Server                Client
   <-----------------------        tcp connection initiated
@@ -37,7 +39,7 @@ Server                Client
   (copying both ways)
 ```
 
-Proxy drop client's short handshake and rewrites packet to disable SSL.
+Proxy drops client's short handshake and rewrites full handshake packet to disable SSL.
 
 ```
 Server     Proxy      Client
