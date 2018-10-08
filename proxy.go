@@ -10,13 +10,6 @@ import (
 	"sync"
 )
 
-var (
-	port           = os.Args[1]
-	targetPort     = os.Args[2]
-	serverCertPath = os.Args[3]
-	serverKeyPath  = os.Args[4]
-)
-
 func main() {
 	err := main2()
 	if err != nil {
@@ -25,9 +18,18 @@ func main() {
 }
 
 func main2() error {
+	if len(os.Args) != 5 {
+		return fmt.Errorf("Expected 4 args: usage: proxy <proxy-port> <server-port> <server-cert-path> <server-key-path>")
+	}
+
+	port := os.Args[1]
+	targetPort := os.Args[2]
+	serverCertPath := os.Args[3]
+	serverKeyPath := os.Args[4]
+
 	serverCert, err := tls.LoadX509KeyPair(serverCertPath, serverKeyPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("loading server key pair: %s", err)
 	}
 
 	tlsConfig := tls.Config{Certificates: []tls.Certificate{serverCert}}
@@ -53,13 +55,13 @@ type MysqlProxy struct {
 func (p MysqlProxy) Serve() error {
 	lis, err := net.Listen("tcp", p.listenAddr)
 	if err != nil {
-		return err
+		return fmt.Errorf("listening: %s", err)
 	}
 
 	for {
 		clientConn, err := lis.Accept()
 		if err != nil {
-			fmt.Printf("accept err: %s\n", err)
+			fmt.Printf("listener accept err: %s\n", err)
 			continue
 		}
 
