@@ -1,8 +1,11 @@
 ## mysql-proxy
 
-MySQL proxy that terminates TLS before proxying connection to MySQL server.
+MySQL proxy that terminates TLS before proxying connection to MySQL server (without TLS). It does not require any changes to server or clients.
 
-See proxy.go
+```bash
+$ go build proxy.go
+$ ./proxy 3306 3307 ./server.crt ./server.key
+```
 
 ## Protocol
 
@@ -55,4 +58,10 @@ Server     Proxy      Client
 
 Reference:
 
-- https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::SSLRequest
+- [go-sql-driver/mysql's writeHandshakeResponsePacket](https://github.com/go-sql-driver/mysql/blob/7ac0064e822156a17a6b598957ddf5e0287f8288/packets.go#L246)
+- [mysql's packet-Protocol::SSLRequest](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::SSLRequest)
+
+## TODO
+
+- add connection deadlines
+- set connection tcp keepalive
