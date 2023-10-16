@@ -18,14 +18,15 @@ func main() {
 }
 
 func main2() error {
-	if len(os.Args) != 5 {
-		return fmt.Errorf("Expected 4 args: usage: proxy <proxy-port> <server-port> <server-cert-path> <server-key-path>")
+	if len(os.Args) != 6 {
+		return fmt.Errorf("Expected 5 args: usage: proxy <proxy-port> <server-addr> <server-port> <server-cert-path> <server-key-path>")
 	}
 
 	port := os.Args[1]
-	targetPort := os.Args[2]
-	serverCertPath := os.Args[3]
-	serverKeyPath := os.Args[4]
+	targetAddr := os.Args[2]
+	targetPort := os.Args[3]
+	serverCertPath := os.Args[4]
+	serverKeyPath := os.Args[5]
 
 	serverCert, err := tls.LoadX509KeyPair(serverCertPath, serverKeyPath)
 	if err != nil {
@@ -37,7 +38,7 @@ func main2() error {
 
 	proxy := MysqlProxy{
 		listenAddr: fmt.Sprintf("0.0.0.0:%s", port),
-		serverAddr: fmt.Sprintf("localhost:%s", targetPort),
+		serverAddr: fmt.Sprintf("%s:%s", targetAddr, targetPort),
 		tlsConfig:  tlsConfig,
 		debug:      false,
 	}
