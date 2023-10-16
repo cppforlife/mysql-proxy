@@ -4,7 +4,7 @@ MySQL proxy that terminates TLS before proxying connection to MySQL server (with
 
 ```bash
 $ go build proxy.go
-$ ./proxy 3306 3307 ./server.crt ./server.key
+$ ./proxy 3306 127.0.0.1 3307 ./server.crt ./server.key
 ```
 
 ## Protocol
